@@ -30,9 +30,9 @@ and corresponding values (that users should honor):
 | `:schema`        | String, Keyword etc.                  | `nil`   | SHOULD be converted using `db-iden` |
 | `:read-only?`    | boolean                               | `false` | true SHOULD disallow write operations |
 | `:show-sql?`     | boolean                               | `true`  | true SHOULD print SQL statements |
-| `:show-sql-fn`   | function (w/ 1 arg)                   | fn that prints SQL using `println`     | you may rebind this to fn that sends to logger |
-| `:clj-to-db`     | function (w/ 1 arg, returns string)   | fn that converts hyphen to underscore  | dictates how should identifiers be converted from Clojure to the database |
-| `:db-to-clj`     | function (w/ 1 arg, returns clj form) | fn that converts to lower-case keyword | dictates how should identifiers be converted from the database to Clojure |
+| `:show-sql-fn`   | function (w/ 1 arg)                   | prints SQL using `println`     | you may rebind this to fn that sends to logger |
+| `:clj-to-db`     | function (w/ 1 arg, returns string)   | converts hyphen to underscore  | dictates how should identifiers be converted from Clojure to the database |
+| `:db-to-clj`     | function (w/ 1 arg, returns clj form) | converts to lower-case keyword | dictates how should identifiers be converted from the database to Clojure |
 | `:fetch-size`    | Integer                               | 1000    | number of rows to fetch per DB roundtrip; helps throttle/optimize large DB reads; 0 means unlimited |
 | `:query-timeout` | Integer                               | 0       | number of seconds to wait for query to execute, after which timeout occurs raising SqlException (not all JDBC drivers support this so check driver manual before use) |
 
