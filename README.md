@@ -22,6 +22,7 @@ corresponding values:
 
 
 | key              | type                                  | default | description |
+|------------------|---------------------------------------|---------|-------------|
 | `:datasource`    | javax.sql.DataSource                  | `nil`   |             |
 | `:connection`    | java.sql.Connection                   | `nil`   |             |
 | `:dbmetadata`    | map                                   | `{}`    | use `dbmeta` to retrieve this value |
