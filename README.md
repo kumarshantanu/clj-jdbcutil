@@ -17,8 +17,8 @@ Everything exists in the `clj-jdbcutil.core` namespace.
 
 ### Dynamic var for database configuration keys
 
-The dynamic var **`*dbspec*`** may be bound to a map containing well known keys and
-corresponding values:
+The dynamic var **`*dbspec*`** may be bound to a map containing well known keys
+and corresponding values (that users should honor):
 
 
 | key              | type                                  | default | description |
@@ -28,8 +28,8 @@ corresponding values:
 | `:dbmetadata`    | map                                   | `{}`    | use `dbmeta` to retrieve this value |
 | `:catalog`       | String, Keyword etc.                  | `nil`   | SHOULD be converted using `db-iden` |
 | `:schema`        | String, Keyword etc.                  | `nil`   | SHOULD be converted using `db-iden` |
-| `:read-only`     | boolean                               | `false` | true SHOULD disallow write operations |
-| `:show-sql`      | boolean                               | `true`  | true SHOULD print SQL statements |
+| `:read-only?`    | boolean                               | `false` | true SHOULD disallow write operations |
+| `:show-sql?`     | boolean                               | `true`  | true SHOULD print SQL statements |
 | `:show-sql-fn`   | function (w/ 1 arg)                   | fn that prints SQL using `println`     | you may rebind this to fn that sends to logger |
 | `:clj-to-db`     | function (w/ 1 arg, returns string)   | fn that converts hyphen to underscore  | dictates how should identifiers be converted from Clojure to the database |
 | `:db-to-clj`     | function (w/ 1 arg, returns clj form) | fn that converts to lower-case keyword | dictates how should identifiers be converted from the database to Clojure |

@@ -71,8 +71,8 @@
    :dbmetadata    (array-map)
    :catalog       nil
    :schema        nil
-   :read-only     false
-   :show-sql      true
+   :read-only?    false
+   :show-sql?     true
    :show-sql-fn   (fn [^String sql] (pp/pprint sql))
    :clj-to-db     (fn c2d [iden]
                     (cond
@@ -103,11 +103,11 @@
                     1. Catalog name - SHOULD be converted using db-iden
     :schema        (Clojure form - String, Keyword etc.; default nil)
                     1. Schema name - SHOULD be converted using db-iden
-    :read-only     (Boolean default false)
+    :read-only?    (Boolean default false)
                     1. If true, all READ operations should execute as usual and
                        all WRITE operations should throw IllegalStateException.
                     2. I false, both READ and WRITE operations execute fine
-    :show-sql      (Boolean default true)
+    :show-sql?     (Boolean default true)
                     1. If true, SQL statements should be printed.
     :show-sql-fn   (function, default: to print SQL statement using `println`)
                     You may like to rebind this to fn that prints via a logger
@@ -176,12 +176,11 @@
 
 
 (defn assoc-readonly
-  "Add :read-only flag to the spec. `flag` can be either a boolean value or a
+  "Add :read-only? flag to the spec. `flag` can be either a boolean value or a
   no-arg function that returns one."
   ([spec flag] {:post [(map? %)]
                 :pre  [(map? spec)]}
-    (assoc-kvmap spec {:read-only flag
-                       }))
+    (assoc-kvmap spec {:read-only? flag}))
   ([spec] {:post [(map? %)]
            :pre  [(map? spec)]}
     (assoc-readonly spec true)))
@@ -190,13 +189,13 @@
 (defn read-only?
   "Return true if spec is in read-only mode, false otherwise."
   ([spec] {:pre [(map? spec)]}
-    (if (:read-only spec) true
+    (if (:read-only? spec) true
       false))
   ([] (read-only? *dbspec*)))
 
 
 (defn verify-writable
-  "Return true if spec is NOT in :read-only mode, throw IllegalStateException
+  "Return true if spec is NOT in :read-only? mode, throw IllegalStateException
   otherwise."
   ([spec] {:pre [(map? spec)]}
     (or (not (read-only? spec))
@@ -381,7 +380,7 @@
       ;; (boolean) access information
       :all-procs-callable     (.allProceduresAreCallable  metadata)
       :all-tables-selectable  (.allTablesAreSelectable    metadata)
-      :read-only              (.isReadOnly                metadata)
+      :read-only?             (.isReadOnly                metadata)
       ;; (boolean) null values info
       :null-plus-nonnull-null (.nullPlusNonNullIsNull     metadata)
       :nulls-sorted-at-end    (.nullsAreSortedAtEnd       metadata)

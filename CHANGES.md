@@ -12,11 +12,11 @@
   * :dbmetadata
   * :catalog
   * :schema
-  * :show-sql
+  * :show-sql?
   * :show-sql-fn
   * :clj-to-db
   * :db-to-clj
-  * :read-only
+  * :read-only?
   * :fetch-size
   * :query-timeout
 * Function to build Connection from supplied parameters
