@@ -150,22 +150,6 @@
          (binding [*dbspec* (merge e-spec# {:connection conn#})] ~@body)))))
 
 
-;(defmacro with-dbspec
-;  "Convenience macro to bind *dbspec* to `spec` merged into *dbspec* and
-;  execute body of code in that context."
-;  [spec & body]
-;  `(binding [*dbspec* (into (or *dbspec* {}) ~spec)]
-;     ~@body))
-
-
-;(defn value
-;  "Assuming that (1) a function is not a value, (2) and that `v` can either be
-;  a no-arg function that returns value, or a value itself, return value."
-;  [v]
-;  (if (fn? v) (v)
-;    v))
-
-
 ;; --- Resource that do not require context-building or cleanup ---
 
 
@@ -187,7 +171,7 @@
     ..body..)"
   [spec ds] {:post [(map? %)]
              :pre  [(map? spec) (or (instance? DataSource ds) (fn? ds))]}
-  (assoc-kvmap spec {:datasource ds ; (value ds)
+  (assoc-kvmap spec {:datasource ds
                      :connection nil}))
 
 
@@ -196,7 +180,7 @@
   no-arg function that returns one."
   ([spec flag] {:post [(map? %)]
                 :pre  [(map? spec)]}
-    (assoc-kvmap spec {:read-only flag ; (value flag)
+    (assoc-kvmap spec {:read-only flag
                        }))
   ([spec] {:post [(map? %)]
            :pre  [(map? spec)]}
@@ -221,91 +205,6 @@
                                                          (pp/pprint spec)))))))
   ([]
     (verify-writable *dbspec*)))
-
-
-;; --- Resources with context-building (and possibly cleanup) ---
-
-
-;; TODO - wrappers below MUST be either private, or deleted
-
-;(defn wrap-dbspec
-;  "Bind *dbspec* to 'spec' and execute f in that context. Libraries MAY provide
-;  their own middleware to modify the values in *dbspec*."
-;  [spec f] {:post [(fn? %)]
-;            :pre  [(fn? f) (map? spec)]}
-;  (fn [& args]
-;    (binding [*dbspec* (into (or *dbspec* {}) spec)]
-;      (apply f args))))
-;
-;
-;(defn wrap-datasource
-;  "Add a :datasource object to the spec and excute f in that context. You may
-;  need use this when dealing with multiple datasources at the same time. For
-;  normal scenarios where only one datasource is required, consider using
-;  `assoc-datasource` and `with-datasource`."
-;  [^DataSource ds f] {:post [(fn? %)]
-;                      :pre  [(fn? f) (instance? DataSource ds)]}
-;  (wrap-dbspec {:datasource ds
-;                :connection nil}
-;    f))
-;
-;
-;(defn wrap-read-only
-;  "Add a :read-only flag to the spec and excute f in that context. `flag` is
-;  either a no-arg function that returns boolean flag, or is a boolean flag.
-;  `f` is the application function to be wrapped."
-;  [flag f] {:post [(fn? %)]
-;            :pre  [(fn? f)]}
-;  (let [b (if (fn? flag) (flag)
-;            (or (and flag true) false))]
-;    (wrap-dbspec {:read-only b}
-;      f)))
-;
-;
-;(defn wrap-datasource-conn
-;  "Middleware to associate a new :connection object in *dbspec*. Assuming `f`
-;  is a fn that may read *dbspec*, return fn that binds :connection in *dbspec*
-;  to a connection obtained from specified datasource, or from :datasource
-;  object in *dbspec*. The connection will be closed after the body is executed."
-;  ([^DataSource ds f] {:post [(fn? %)]
-;                       :pre  [(fn? f) (instance? DataSource ds)]}
-;    (fn [& args]
-;      (let [conn ^Connection (.getConnection ds)]
-;        (try
-;          (apply (wrap-dbspec {:connection conn}
-;                   f) args)
-;          (finally
-;            (try (.close conn)
-;              (catch Exception _)))))))
-;  ([f] {:post [(fn? %)]
-;        :pre  [(fn? f)]}
-;    (wrap-datasource-conn (:datasource *dbspec*) f)))
-;
-;
-;(defn wrap-connection
-;  "Middleware to ensure :connection object in *dbspec*. Return fn that should
-;  be passed same arguments that you would pass to `f`. The returned fn ensures
-;  that :connection is available before it invokes `f` - obtaining one from
-;  :datasource if unavailable."
-;  ([^Connection conn f] {:post [(fn? %)]
-;                         :pre  [(fn? f) (instance? Connection conn)]}
-;    (fn [& args]
-;      (wrap-dbspec {:connection conn}
-;        f)))
-;  ([f] {:post [(fn? %)]
-;        :pre  [(fn? f)]}
-;    (fn [& args]
-;      (if (:connection *dbspec*) (apply f args)
-;        (apply (wrap-datasource-conn f) args)))))
-;
-;
-;(defmacro with-connection
-;  "Macro (like c.c.sql/with-connection) to execute body of code in the context
-;  of a spec while ensuring that a connection exists."
-;  [spec & body] {:pre [`(map? ~spec)]}
-;  `(with-dbspec ~spec
-;     (let [g# (wrap-connection (fn [] ~@body))]
-;       (g#))))
 
 
 ;; ----- Factory functions for creating DB-Spec -----
