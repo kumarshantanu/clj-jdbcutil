@@ -40,8 +40,8 @@ corresponding values:
 **Notes:**
 
 * Users MAY expose their own API to re-bind this var to new values.
-* They MUST NOT alter the type/semantics of the well-defined keys.
-* They MAY introduce custom keys with unique prefixes e.g.
+* Users MUST NOT alter the type/semantics of the well-defined keys.
+* Users MAY introduce custom keys with unique prefixes e.g.
   `:com.foo.xlib.conn-pool-name` in order to prevent name collision.
 
 ### Creating datasources
