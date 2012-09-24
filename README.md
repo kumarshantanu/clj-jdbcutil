@@ -4,7 +4,7 @@ Clojure JDBC utility functions meant for other higher-level libraries.
 
 ## Usage
 
-On Clojars: _This library is not on Clojars yet._
+On Clojars: https://clojars.org/clj-jdbcutil
 
 Leiningen dependency: `[clj-jdbcutil "0.1.0"]`
 

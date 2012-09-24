@@ -1,6 +1,6 @@
-(defproject clj-jdbcutil "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+(defproject clj-jdbcutil "0.1.0"
+  :description "JDBC utility functions for Clojure"
+  :url "https://github.com/kumarshantanu/clj-jdbcutil"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :mailing-list {:name "Bitumen Framework discussion group"

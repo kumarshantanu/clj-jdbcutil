@@ -1,7 +1,7 @@
 # Changes and TODO
 
 
-## 0.1 / 2012-Sep-??
+## 0.1.0 / 2012-Sep-24
 
 * Support for column names collection in `clj-to-db`
 * Default spec as a static var `default-dbspec`
